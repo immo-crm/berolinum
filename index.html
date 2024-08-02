@@ -5,15 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header-container { 
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            z-index: 1000;
+        }
+        #header-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #form-title {
+            position: absolute;
+            transform: translate(0%, -100%);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 1001;
+            margin: 0;
+            padding: 10px;
+            background-color: rgba(0,0,0,0.5);
+            border-radius: 5px;
+        }
+        @media (min-width: 768px) {
+            .container-custom {
+                max-width: 500px;
+            }
+        }
+        #error-message {
+            display: none;
+            color: red;
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1 class="mb-4">Contact Us</h1>
-        <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DQy000008Gwl6" method="POST">
+    <div class="header-container">
+        <img id="header-image" src="" alt="Header Image">
+        <!-- <h3 id="form-title">Contact Us</h3> -->
+         <p id="form-title"></p>
+    </div>
 
-            <input type=hidden name="oid" value="00DQy000008Gwl6">
-            <input type=hidden name="retURL" value="https://berlin-property-partner.com/">
-            <input type=hidden id="recordType" name="recordType" value="012Qy000002LsIn">
+    <div class="container container-custom mt-5">
+        <img id="header-image" src="" alt="Header Image" style="display: none;">
+        <div id="error-message"></div>
+        <form id="contact-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DQy000008Gwl6" method="POST">
+            <input type="hidden" name="oid" id="oid" value="00DQy000008Gwl6">
+            <input type="hidden" name="retURL" value="https://berlin-property-partner.com/">
+            <input type="hidden" id="recordType" name="recordType" value="012Qy000002LsIn">
 
             <div class="form-group">
                 <label for="first_name">First Name</label>
@@ -71,7 +113,6 @@
                 </div>
             </div>
 
-            
 
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -81,21 +122,54 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        (function() {
-            'use strict';
-            window.addEventListener('load', function() {
-                var forms = document.getElementsByClassName('needs-validation');
-                var validation = Array.prototype.filter.call(forms, function(form) {
-                    form.addEventListener('submit', function(event) {
-                        if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                        }
-                        form.classList.add('was-validated');
-                    }, false);
-                });
-            }, false);
-        })();
+        function getBase64Params() {
+            const params = new URLSearchParams(window.location.search);
+            const base64 = params.get('data');
+            if (base64) {
+                try {
+                    const jsonString = atob(base64);
+                    return JSON.parse(jsonString);
+                } catch (e) {
+                    console.error('Error decoding base64 parameters:', e);
+                    showErrorMessage('Link is not valid');
+                }
+            }
+            return null;
+        }
+
+        function showErrorMessage(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            document.getElementById('contact-form').style.display = 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = getBase64Params();
+            if (params) {
+                const now = new Date();
+                const expirationDate = new Date(params.expirationDate);
+
+                if (expirationDate < now) {
+                    showErrorMessage('Link has expired');
+                    return;
+                }
+
+                if (params.recordId) {
+                    document.getElementById('oid').value = params.recordId;
+                }
+                if (params.imageUrl) {
+                    const headerImage = document.getElementById('header-image');
+                    headerImage.src = params.imageUrl;
+                    headerImage.style.display = 'block';
+                }
+                if (params.title) {
+                    document.getElementById('form-title').textContent = params.title;
+                }
+            } else {
+                showErrorMessage('Link is not valid');
+            }
+        });
     </script>
 </body>
 </html>
