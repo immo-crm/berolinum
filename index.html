@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Contact Us</h1>
+        <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DQy000008Gwl6" method="POST">
+
+            <input type=hidden name="oid" value="00DQy000008Gwl6">
+            <input type=hidden name="retURL" value="https://berlin-property-partner.com/">
+            <input type=hidden id="recordType" name="recordType" value="012Qy000002LsIn">
+
+            <div class="form-group">
+                <label for="first_name">First Name</label>
+                <input id="first_name" class="form-control" maxlength="40" name="first_name" type="text" required>
+                <div class="invalid-feedback">
+                    Please provide a first name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Last Name</label>
+                <input id="last_name" class="form-control" maxlength="80" name="last_name" type="text" required>
+                <div class="invalid-feedback">
+                    Please provide a last name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="company">Company</label>
+                <input id="company" class="form-control" maxlength="40" name="company" type="text" required>
+                <div class="invalid-feedback">
+                    Please provide a company name.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input id="email" class="form-control" maxlength="80" name="email" type="email" required>
+                <div class="invalid-feedback">
+                    Please provide a valid email.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input id="phone" class="form-control" maxlength="40" name="phone" size="20" type="tel" />
+                <div class="invalid-feedback">
+                    Please provide a valid Phone.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="city">City</label>
+                <input id="city" class="form-control" maxlength="40" name="city" type="text" required>
+                <div class="invalid-feedback">
+                    Please provide a city.
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" class="form-control" name="description"></textarea>
+                <div class="invalid-feedback">
+                    Please provide a valid Phone.
+                </div>
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>
