@@ -1,175 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-gray-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        .header-container { 
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            z-index: 1000;
-        }
-        #header-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        #form-title {
-            position: absolute;
-            transform: translate(0%, -100%);
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            z-index: 1001;
-            margin: 0;
-            padding: 10px;
-            background-color: rgba(0,0,0,0.5);
-            border-radius: 5px;
-        }
-        @media (min-width: 768px) {
-            .container-custom {
-                max-width: 500px;
-            }
-        }
-        #error-message {
-            display: none;
-            color: red;
-            margin-bottom: 15px;
-        }
-    </style>
-</head>
-<body>
-    <div class="header-container">
-        <img id="header-image" src="" alt="Header Image">
-        <!-- <h3 id="form-title">Contact Us</h3> -->
-         <p id="form-title"></p>
-    </div>
-
-    <div class="container container-custom mt-5">
-        <img id="header-image" src="" alt="Header Image" style="display: none;">
-        <div id="error-message"></div>
-        <form id="contact-form" action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8&orgId=00DQy000008Gwl6" method="POST">
-            <input type="hidden" name="oid" id="oid" value="00DQy000008Gwl6">
-            <input type="hidden" name="retURL" value="https://berlin-property-partner.com/">
-            <input type="hidden" id="recordType" name="recordType" value="012Qy000002LsIn">
-
-            <div class="form-group">
-                <label for="first_name">First Name</label>
-                <input id="first_name" class="form-control" maxlength="40" name="first_name" type="text" required>
-                <div class="invalid-feedback">
-                    Please provide a first name.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="last_name">Last Name</label>
-                <input id="last_name" class="form-control" maxlength="80" name="last_name" type="text" required>
-                <div class="invalid-feedback">
-                    Please provide a last name.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="company">Company</label>
-                <input id="company" class="form-control" maxlength="40" name="company" type="text" required>
-                <div class="invalid-feedback">
-                    Please provide a company name.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" class="form-control" maxlength="80" name="email" type="email" required>
-                <div class="invalid-feedback">
-                    Please provide a valid email.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input id="phone" class="form-control" maxlength="40" name="phone" size="20" type="tel" />
-                <div class="invalid-feedback">
-                    Please provide a valid Phone.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="city">City</label>
-                <input id="city" class="form-control" maxlength="40" name="city" type="text" required>
-                <div class="invalid-feedback">
-                    Please provide a city.
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" class="form-control" name="description"></textarea>
-                <div class="invalid-feedback">
-                    Please provide a valid Phone.
-                </div>
-            </div>
-
-
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <title>Property Details and Web-to-Lead Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        function getBase64Params() {
-            const params = new URLSearchParams(window.location.search);
-            const base64 = params.get('data');
-            if (base64) {
-                try {
-                    const jsonString = atob(base64);
-                    return JSON.parse(jsonString);
-                } catch (e) {
-                    console.error('Error decoding base64 parameters:', e);
-                    showErrorMessage('Link is not valid');
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                    }
                 }
             }
-            return null;
         }
+    </script>
+</head>
+<body class="h-full">
+    <div class="min-h-full flex flex-col">
+        <header class="relative">
+            <div class="h-64 overflow-hidden">
+                <img id="header-image" alt="Header Image" class="w-full h-64 object-cover">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <h1 id="company-name" class="text-white text-4xl font-bold">Your Company Name</h1>
+                </div>
+            </div>
+        </header>
 
-        function showErrorMessage(message) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = message;
-            errorDiv.style.display = 'block';
-            document.getElementById('contact-form').style.display = 'none';
-        }
+        <main class="flex-grow">
+            <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+                <div class="px-4 py-6 sm:px-0">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div>
+                            <h2 class="text-2xl font-bold mb-4">Property Details</h2>
+                            <div id="property-details" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                                <!-- Property details will be dynamically inserted here -->
+                            </div>
+                            <div class="gallery grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                                <!-- Gallery images will be dynamically inserted here -->
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold mb-4">Inquiry Form</h2>
+                            <div id="error-message" class="mb-4 text-red-600"></div>
+                            <form id="web-to-lead-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                                <!-- Form fields will be dynamically inserted here -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = getBase64Params();
-            if (params) {
-                const now = new Date();
-                const expirationDate = new Date(params.expirationDate);
+        <footer class="bg-gray-800">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-gray-300 text-sm">
+                    © 2024 Your Company Name. All rights reserved.
+                </p>
+            </div>
+        </footer>
+    </div>
 
-                if (expirationDate < now) {
-                    showErrorMessage('Link has expired');
-                    return;
+    <script>
+        async function fetchFormData() {
+            try {
+                // Get the 'expose' parameter from the URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const encodedPath = urlParams.get('expose');
+        
+                if (!encodedPath) {
+                    throw new Error('No "expose" parameter found in the URL');
                 }
-
-                if (params.recordId) {
-                    document.getElementById('oid').value = params.recordId;
-                }
-                if (params.imageUrl) {
-                    const headerImage = document.getElementById('header-image');
-                    headerImage.src = params.imageUrl;
-                    headerImage.style.display = 'block';
-                }
-                if (params.title) {
-                    document.getElementById('form-title').textContent = params.title;
-                }
-            } else {
-                showErrorMessage('Link is not valid');
+        
+                // Decode the base64-encoded path
+                const path = atob(encodedPath);
+        
+                const response = await fetch(`https://api.telegra.ph/getPage/${path}?return_content=true`, {
+                    method: 'GET'
+                });
+                
+                const data = await response.json();
+                return JSON.parse(data.result.content[0].children[0]);
+            } catch (error) {
+                console.error('Error fetching form data:', error);
+                document.getElementById('error-message').textContent = 'Error loading form data. Please try again later.';
             }
-        });
+        }
+
+        function populatePropertyDetails(data) {
+            const detailsContainer = document.getElementById('property-details');
+            const details = data.property_details;
+            
+            for (const [key, value] of Object.entries(details)) {
+                const detailElement = document.createElement('p');
+                detailElement.className = 'mb-2';
+                detailElement.innerHTML = `<strong class="capitalize">${key.replace('_', ' ')}:</strong> ${value}`;
+                detailsContainer.appendChild(detailElement);
+            }
+        }
+
+        function populateForm(data) {
+            const form = document.getElementById('web-to-lead-form');
+            
+            // Add hidden fields for Salesforce configuration
+            for (const [key, value] of Object.entries(data.formConfig)) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value;
+                form.appendChild(input);
+            }
+
+            // Add form fields
+            data.fields.forEach(field => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'mb-4';
+
+                const label = document.createElement('label');
+                label.htmlFor = field.name;
+                label.className = 'block text-gray-700 text-sm font-bold mb-2';
+                label.textContent = field.label;
+                formGroup.appendChild(label);
+
+                if (field.name === 'message') {
+                    const textarea = document.createElement('textarea');
+                    textarea.className = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
+                    textarea.id = field.name;
+                    textarea.name = field.name;
+                    textarea.required = field.required;
+                    textarea.rows = 4;
+                    formGroup.appendChild(textarea);
+                } else {
+                    const input = document.createElement('input');
+                    input.type = field.name === 'email' ? 'email' : 'text';
+                    input.className = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
+                    input.id = field.name;
+                    input.name = field.name;
+                    input.required = field.required;
+                    formGroup.appendChild(input);
+                }
+
+                form.appendChild(formGroup);
+            });
+
+            // Add submit button
+            const submitButton = document.createElement('button');
+            submitButton.type = 'submit';
+            submitButton.className = 'bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+            submitButton.textContent = 'Submit';
+            form.appendChild(submitButton);
+        }
+
+        function populateHeader(data) {
+            const headerImage = document.getElementById('header-image');
+            headerImage.src = data.headerImage.url;
+            headerImage.alt = data.headerImage.alt;
+
+            const companyName = document.getElementById('company-name');
+            companyName.textContent = data.companyName;
+        }
+
+        function populateGallery(data) {
+            const gallery = document.querySelector('.gallery');
+            data.gallery.forEach(image => {
+                const img = document.createElement('img');
+                img.src = image.url;
+                img.alt = image.alt;
+                img.className = 'w-full h-48 object-cover rounded-lg shadow-md';
+                gallery.appendChild(img);
+            });
+        }
+
+        async function initPage() {
+            const data = await fetchFormData();
+            if (data) {
+                populatePropertyDetails(data);
+                populateForm(data);
+                populateHeader(data);
+                populateGallery(data);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initPage);
     </script>
 </body>
 </html>
