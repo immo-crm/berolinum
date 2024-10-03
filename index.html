@@ -35,12 +35,13 @@
                 <div class="px-4 py-6 sm:px-0">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
-                            <h2 class="text-2xl font-bold mb-4">Property Details</h2>
-                            <div id="property-details" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-                                <!-- Property details will be dynamically inserted here -->
-                            </div>
+                            <h2 class="text-2xl font-bold mb-4">Property Images</h2>
                             <div class="gallery grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
                                 <!-- Gallery images will be dynamically inserted here -->
+                            </div>
+                            <h2 class="text-2xl font-bold mb-4 mt-8">Property Details</h2>
+                            <div id="property-details" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                                <!-- Property details will be dynamically inserted here -->
                             </div>
                         </div>
                         <div>
@@ -100,6 +101,10 @@
             }
         }
 
+        function getRedircetURL() {
+            return location.origin + window.location.pathname + '/success.html';
+        }
+
         function populateForm(data) {
             const form = document.getElementById('web-to-lead-form');
             
@@ -108,6 +113,11 @@
                 input.type = 'hidden';
                 input.name = key;
                 input.value = value;
+
+                if(input.name === 'retURL') {
+                    input.value = getRedircetURL();
+                }
+
                 form.appendChild(input);
             }
 
