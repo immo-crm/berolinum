@@ -21,8 +21,8 @@
 <body class="h-full">
     <div class="min-h-full flex flex-col">
         <header class="relative">
-            <div class="h-64 overflow-hidden">
-                <img id="header-image" alt="Header Image" class="w-full h-64 object-cover">
+            <div class="h-40 overflow-hidden">
+                <img id="header-image" alt="Header Image" class="w-full h-40 object-cover">
                 <div class="absolute inset-0 bg-black opacity-50"></div>
                 <div class="absolute inset-0 flex items-center justify-center">
                     <h1 id="company-name" class="text-white text-4xl font-bold">Your Company Name</h1>
@@ -67,7 +67,6 @@
     <script>
         async function fetchFormData() {
             try {
-                // Get the 'expose' parameter from the URL
                 const urlParams = new URLSearchParams(window.location.search);
                 const encodedPath = urlParams.get('expose');
         
@@ -75,7 +74,6 @@
                     throw new Error('No "expose" parameter found in the URL');
                 }
         
-                // Decode the base64-encoded path
                 const path = atob(encodedPath);
         
                 const response = await fetch(`https://api.telegra.ph/getPage/${path}?return_content=true`, {
@@ -105,7 +103,6 @@
         function populateForm(data) {
             const form = document.getElementById('web-to-lead-form');
             
-            // Add hidden fields for Salesforce configuration
             for (const [key, value] of Object.entries(data.formConfig)) {
                 const input = document.createElement('input');
                 input.type = 'hidden';
@@ -114,7 +111,9 @@
                 form.appendChild(input);
             }
 
-            // Add form fields
+            form.setAttribute('action', data.formConfig.form_action);
+            form.setAttribute('method', 'POST');
+
             data.fields.forEach(field => {
                 const formGroup = document.createElement('div');
                 formGroup.className = 'mb-4';
@@ -146,12 +145,42 @@
                 form.appendChild(formGroup);
             });
 
-            // Add submit button
+            const termsGroup = document.createElement('div');
+            termsGroup.className = 'mb-4';
+            const termsLabel = document.createElement('label');
+            termsLabel.className = 'flex items-center';
+            const termsCheckbox = document.createElement('input');
+            termsCheckbox.type = 'checkbox';
+            termsCheckbox.id = 'terms';
+            termsCheckbox.className = 'mr-2';
+            termsLabel.appendChild(termsCheckbox);
+            const termsText = document.createElement('span');
+            termsText.innerHTML = 'I agree to the <a href="tc.html" target="_blank" class="text-primary hover:underline">Terms and Conditions</a>';
+            termsLabel.appendChild(termsText);
+            termsGroup.appendChild(termsLabel);
+            form.appendChild(termsGroup);
+
             const submitButton = document.createElement('button');
             submitButton.type = 'submit';
-            submitButton.className = 'bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline';
+            submitButton.id = 'submit-button';
+            submitButton.className = 'bg-gray-400 cursor-not-allowed text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors duration-200';
             submitButton.textContent = 'Submit';
+            submitButton.disabled = true;
             form.appendChild(submitButton);
+
+            termsCheckbox.addEventListener('change', function() {
+                submitButton.disabled = !this.checked;
+                if (this.checked) {
+                    submitButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    submitButton.classList.add('bg-primary', 'hover:bg-blue-700');
+                } else {
+                    submitButton.classList.remove('bg-primary', 'hover:bg-blue-700');
+                    submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                }
+            });
+
+            // Initialize button state
+            submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
         }
 
         function populateHeader(data) {
