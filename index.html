@@ -81,11 +81,10 @@
                 });
                 
                 const data = await response.json();
-                // return {"property_details":{"rooms":3,"price":"2300.00","floor":6,"description":"Charming and modern, this newly renovated two-bedroom apartment boasts abundant natural light and contemporary finishes. The open-plan layout seamlessly integrates the living, dining, and kitchen areas, creating an inviting space for relaxation or entertaining. Enjoy sleek stainless steel appliances and ample storage in the kitchen, while the bedrooms offer comfort and privacy. With hardwood floors throughout, a stylish bathroom, and convenient access to local amenities, this property is perfect for those seeking both style and functionality in urban living","address":"Eckermannstr. 58, Berlin, 12683, Deutschland"},"headerImage":{"url":"https://img1.wsimg.com/isteam/ip/5c666621-1bf4-498b-9c7b-cf1b09cecbf9/blob-16aa6b4.png/:/fx-gs/rs=w:2046,m","alt":"Company Header"},"gallery":[{"url":"https://test-immo-image-uploader.s3.amazonaws.com/a03Qy0000053HnTIAU/image_1726055353136_0.jpg","alt":"Gallery Image"},{"url":"https://test-immo-image-uploader.s3.amazonaws.com/a03Qy0000053HnTIAU/image_1726055322653_0.jpeg","alt":"Gallery Image"},{"url":"https://test-immo-image-uploader.s3.amazonaws.com/a03Qy0000053HnTIAU/image_1726121776920_0.jpg","alt":"Gallery Image"}],"formConfig":{},"fields":[{"required":true,"name":"first_name","label":"First Name","isHidden":false},{"required":true,"name":"last_name","label":"Last Name","isHidden":false},{"required":true,"name":"email","label":"Email","isHidden":false},{"required":true,"name":"phone","label":"Phone","isHidden":false},{"required":true,"name":"message","label":"Message","isHidden":false},{"value":"Web","required":true,"name":"lead_source","label":"lead_source","isHidden":true}],"companyName":"Berolinum \n Immobilien"};
                 return JSON.parse(data.data);
             } catch (error) {
                 console.error(error);
-                redirectToErrorPage();
+                // redirectToErrorPage();
             }
         }
 
@@ -111,19 +110,6 @@
 
         function populateForm(data) {
             const form = document.getElementById('web-to-lead-form');
-            for (const [key, obj] of Object.entries(data.formConfig)) {
-                const input = document.createElement('input');
-                input.type = obj.isHidden ? 'hidden' : 'text';
-                input.name = obj.name;
-                input.value = obj.value;
-
-                if(input.name === 'retURL') {
-                    input.value = getRedirectURL();
-                }
-
-                form.appendChild(input);
-            }
-
             data.fields.forEach(field => {
                 const formGroup = document.createElement('div');
                 formGroup.className = 'mb-4';
