@@ -76,14 +76,14 @@
                 }
         
                 const path = atob(encodedPath);
-                const response = await fetch(`https://immocrm.pythonanywhere.com/record/${path}`, {
+                const response = await fetch(`https://immocrm.pythonanywhere.com/api/record/${path}/`, {
                     method: 'GET'
                 });
                 
                 const data = await response.json();
                 return JSON.parse(data.data);
             } catch (error) {
-                redirectToErrorPage();
+                //redirectToErrorPage();
             }
         }
 
