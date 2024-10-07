@@ -200,7 +200,7 @@
             try {
                 const recordId = atob(encodedPath);
             } catch (error) {
-                redirectToErrorPage();
+                // redirectToErrorPage();
             }
 
             const recordId = atob(encodedPath);
@@ -254,7 +254,7 @@
                 if (response.ok) {
                     window.location.href = 'success.html';
                 } else {
-                    redirectToErrorPage();
+                    // redirectToErrorPage();
                 }
             } catch (error) {
                 console.error('Error:', error);
